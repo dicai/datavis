@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Food Around the World</title>
+    <link rel="stylesheet" href="css/website.css"/>
+  </head>
+  <body>
+    <header>
+    <h1>Food Around the World</h1>
+    <p>A study of cuisines around the world by Diana Cai and Gabrielle Ehrlich</p>
+    </header>
+
+    <div id="description">
+      We gathered data for recipes from AllRecipes.com for the cuisines Chinese, Korean, Japanese,
+      Thai, Vietnamese, Indian, Filipino, Italian, French, Greek, Hungarian, and Mexican.
+      <br /> <br />
+      In this visualization, given  a cuisine and a recipe from that cuisine, we compute a similarity score for recipes other recipes we are comparing it to as well as an aggregate similarity score for a cuisine.
+      We represent each cuisine as a cluster, where in the center, we have the selected recipe with similar recipes clustered around it. The closer the node is to the recipe of interest, the more similar it is.
+      <br /> <br />
+      Similarly for other cuisines, the length of the cuisine node from the center shows how close together the aggregate scores are. The length of a recipe in that cluster from the center denotes how similar the recipe is to the currently selected recipe. We allow the user to select which cuisines to display (compute the similarity score) as well as adjust similarity thresholds and the number of nodes to display. Mousing over a node will show additional details, such as the ingredients. Clicking on a node will display simple information in a tooltip.
+      Visit the link below to give it a try!
+
+    </div>
+    Here is a screencast of the video:
+    <a href="http://www.youtube.com/watch?v=spGLmfsC6dw&feature=youtu.be">Screencast Link</a>
+    <br /><br />
+    To see our process book:
+    <a href="https://docs.google.com/document/d/1BgksLm6Z5eEiVPz8PFYVata2xYFfehx41_5g6f2lEmU/edit?pli=1">Click here</a>
+    <br /><br />
+    Visit our visualization here! <a href="visualization/">Recipe Cuisine Visualization</a> <br /> <br />
+
+    <a href="visualization/" target="_blank"><img src="img/crop.png" alt="screenshot"/></a>
+    <br />
+    <footer>
+    <!--This was made for CS171 Project 2 by Diana Cai and Gabrielle Ehrlich.-->
+    </footer>
+
+  </body>
+</html>
