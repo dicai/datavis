@@ -14,6 +14,8 @@ var MIN_ING = 4;
 var MIN_SIMILARITY = .3;
 var MAX_SIMILARITY = 1;
 
+var visW = 700;
+var visH = 600;
 function load_data(cuisine) {
   d3.json("../data/"+cuisine+".json", function(error, json) {
     if(error) return console.warn(error);
@@ -156,22 +158,31 @@ function populate_check_boxes() {
     checkboxes.appendChild(elt);
   }
 }
+
 function all_files_loaded(){
   populate_cuisine_choice();
   populate_check_boxes();
-  //var elt = cuisine_data["chinese"]["data"][14];
-  //var elt_cuisine = "chinese";
-  //console.log(elt);
-  //build_code_flower(elt, elt_cuisine);
-  //total_ing = total_unique_ing();
-  //var sorted = sortObject(total_ing);
-  //for (i = 1; i <= 100; i++) {
-    //console.log(sorted[sorted.length-i].key);
-  //}
 
-  //console.log("total ings:", total_ing.length);
+  var dropdown = document.getElementById("cuisine");
+  dropdown.selectedIndex = 1;
+  load_recipes();
+  var dropdown2 = document.getElementById("recipe");
+  dropdown2.selectedIndex = 7;
+  load_viz(false);
+};
 
-}
+
+function randomize() {
+  var dropdown = document.getElementById("cuisine");
+  var index = Math.floor(Math.random()*(dropdown.length-1)+1);
+  dropdown.selectedIndex = index;
+  load_recipes();
+  var dropdown2 = document.getElementById("recipe");
+  index = Math.floor(Math.random()*(dropdown2.length-1)+1);
+  dropdown2.selectedIndex = index;
+  load_viz(false);
+};
+
 
 function load_recipes(){
   var dropdown = document.getElementById("cuisine");
@@ -266,9 +277,29 @@ function build_code_flower(elt, cuisine, update) {
   //create a new CodeFLower
   if (!update)
   {
-    currentCodeFlower = new CodeFlower("#visualization", 900, 800);
+    currentCodeFlower = new CodeFlower("#visualization", visW, visH);
   }
   currentCodeFlower.update(data);
+
+  redraw_graphs("graph1");
+  redraw_graphs("graph2");
+}
+
+var flattened_data = {};
+function redraw_graphs(graph) {
+  remove_old_graphs(graph);
+  //plot_all_cuisines(flattened_data, "fat", "kcal");
+  //plot_all_cuisines(flattened_data, "fat", "rating");
+
+  var x_axis_drop = document.getElementById("x"+graph);
+  var index = x_axis_drop.selectedIndex;
+  var x_axis = x_axis_drop.options[index].value;
+
+  var y_axis_drop = document.getElementById("y"+graph);
+  index = y_axis_drop.selectedIndex;
+  var y_axis = y_axis_drop.options[index].value;
+  //console.log(flattened_data);
+  plot_all_cuisines(flattened_data, x_axis, y_axis, "#"+graph);
 }
 
 function color(cuisine) {
@@ -304,23 +335,32 @@ function color(cuisine) {
   }
 }
 function build_new_json(elt, elt_cuisine){
+  flattened_data = {};
   var json = {
     "title": elt["title"].split("-").join(" ").toUpperCase(),
     "name": elt["title"],
     "size": 1500,
     "similarity": 1.0,
-    "language": elt_cuisine,
+    "cuisine": elt_cuisine,
     "rating": elt["rating"],
     "url" : "http://allrecipes.com/recipe/" + elt["title"] + "/detail.aspx",
-    "inglist": elt["ing_lst"],
+    "ing_lst": elt["ing_lst"],
     "ning": elt["ning"],
-    "color" : color("unique")
+    "color" : color("unique"),
+    "kcal": elt["kcal"],
+    "chol": elt["chol"],
+    "protein": elt["protein"],
+    "fiber": elt["fiber"],
+    "sodium": elt["sodium"],
+    "time": elt["time"],
+    "fat": elt["fat"]
   };
   var children = [];
   var main_children = [];
 
   for (var cuisine in cuisine_data)
   {
+    flattened_data[cuisine] = [];
     var checkbox = document.getElementById(cuisine);
     if(checkbox.checked) {
       var data = cuisine_data[cuisine];
@@ -369,6 +409,9 @@ function build_new_json(elt, elt_cuisine){
       var sorted = sortObject(cuisine_children);
       var num_keep = Math.min(MAX_KEEP, Math.max(MIN_KEEP, Math.round(KEEP_PROP * sorted.length)));
       cuisine_child["children"] = sorted.slice(0, num_keep);
+      for(var i = 0; i < num_keep && i < sorted.length; i++) {
+        flattened_data[cuisine].push(cuisine_child["children"][i]);
+      }
       children.push(cuisine_child);
       }
     }
@@ -385,6 +428,9 @@ function build_new_json(elt, elt_cuisine){
       sorted = sorted.slice(0, num_keep);
 
   var all_children = children.concat(sorted);
+  for(var i = 0; i < num_keep && i < sorted.length; i++) {
+    flattened_data[elt_cuisine].push(sorted[i]);
+  }
 
   json["children"] =  all_children;
 
@@ -398,13 +444,20 @@ function build_child(elt, recipe, cuisine) {
     "title": recipe["title"].split("-").join(" ").toUpperCase(),
     "name": recipe["title"], // original
     "size": similarity * similarity * 800,
-    "language": cuisine, //to set the color?
+    "cuisine": cuisine, //to set the color?
     "similarity": similarity,
     "rating": recipe["rating"],
     "url" : "http://allrecipes.com/recipe/" + recipe["title"] + "/detail.aspx",
     "inglist": recipe["ing_lst"],
     "ning": recipe["ning"],
-    "color" : color(cuisine)
+    "color" : color(cuisine),
+    "kcal": recipe["kcal"],
+    "chol": recipe["chol"],
+    "protein": recipe["protein"],
+    "fiber": recipe["fiber"],
+    "sodium": recipe["sodium"],
+    "time": recipe["time"],
+    "fat": recipe["fat"]
   };
   return child;
 }

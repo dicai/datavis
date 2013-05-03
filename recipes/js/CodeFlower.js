@@ -67,7 +67,7 @@ CodeFlower.prototype.update = function(json) {
 
   this.node.transition()
     .attr("r", function(d) {
-      if (d.language == "unique") {
+      if (d.cuisine == "unique") {
         return 10;
       }
       return d.children ? 3.5 : Math.pow(d.size, 2/5) || 1; });
@@ -77,7 +77,7 @@ CodeFlower.prototype.update = function(json) {
     .attr("class", "node")
     .classed('directory', function(d) { return (d._children || d.children) ? 1 : 0; })
     .attr("r", function(d) {
-      if (d.language == "unique") {
+      if (d.cuisine == "unique") {
         return 10;
       }
       return d.children ? 5 : Math.pow(d.size, 2/5) || 1; })
@@ -121,6 +121,7 @@ CodeFlower.prototype.flatten = function(root) {
 
 var tooltip = CustomTooltip("recipe_tooltip", 240);
 CodeFlower.prototype.click = function(d) {
+  console.log("clicked!");
   var ingredients = '<ul>';
   for(var i = 0; i < d.inglist.length; i++)
   {
@@ -129,7 +130,7 @@ CodeFlower.prototype.click = function(d) {
   ingredients += '</ul>'
   var content =
     '<span class=\"title\"><a href=\"' + d.url + '\" target=\"_blank">' + d.title + '</a></span><br/><br/>' +
-    '<span class =\"info\">Cuisine:</span> ' + d.language + '<br/>' +
+    '<span class =\"info\">Cuisine:</span> ' + d.cuisine + '<br/>' +
     '<span class =\"info\">Rating:</span> ' + d.rating.toFixed(1) + '<br/>' +
     '<span class =\"info\">Similarity:</span> ' + Math.round(d.similarity*10000)/100 + '% <br/>' +
     '<span class =\"info\">Ingredients:</span> ' + ingredients;
@@ -139,26 +140,50 @@ CodeFlower.prototype.click = function(d) {
     //d._children = d.children;
     //d.children = null;
   //} else {
-    //d.children = d._children;
-    //d._children = null;
+  //d.children = d._children;
+  //d._children = null;
   //}
   //this.update();
 
 };
 
-CodeFlower.prototype.mouseover = function(d) {
-  //d.style('stroke-width', '2');
-
-  nodes = this.svg.selectAll("circle.node").each(function(d1, i){
-    if(d["language"] == d1["language"]) {
-      d3.select(this).style('stroke', 'black')
+function highlight_same(d, d1, value) {
+  if(d["cuisine"] == d1["cuisine"]) {
+    value.style('stroke', 'black')
+      .style('stroke-width', '2');
+    if(d["title"] == d1["title"]) {
+      value.style('stroke', 'red')
+        .attr("opacity", "1.0")
         .style('stroke-width', '2');
-      if(d["title"] == d1["title"]) {
-        d3.select(this).style('stroke', 'red')
-          .style('stroke-width', '2');
-
-      }
     }
+  }
+  else {
+    value.style("fill", "AAA")
+      .attr("opacity", 0.4);;
+
+  }
+
+};
+
+function general_mouseover(d) {
+  var svg = d3.select("#visualization").selectAll('svg');
+  nodes = svg.selectAll("circle.node").each(function(d1, i){
+    var value = d3.select(this);
+    highlight_same(d, d1, value);
+  });
+
+  //link to all graphs present
+  var all_svgs = d3.select("#graph1").selectAll('svg');
+  var all_circles = all_svgs.selectAll("circle");
+  all_svgs.selectAll("circle").each(function(d1, i){
+    var value = d3.select(this);
+    highlight_same(d, d1, value);
+  });
+  var all_svgs = d3.select("#graph2").selectAll('svg');
+  var all_circles = all_svgs.selectAll("circle");
+  all_svgs.selectAll("circle").each(function(d1, i){
+    var value = d3.select(this);
+    highlight_same(d, d1, value);
   });
 
   //display info in sidebar
@@ -173,12 +198,36 @@ CodeFlower.prototype.mouseover = function(d) {
     //.text(d.title + "\n " + Math.round(d.similarity*10000)/100 + "% similarity")
     //.style('display', null);
 };
+CodeFlower.prototype.mouseover = function(d) {
+  general_mouseover(d);
+};
+
+function general_mouseout(d) {
+  //this.text.style('display', 'none')
+  nodes.style('stroke', 'black')
+      .style('stroke-width', '1')
+      .attr("opacity", 1.0)
+      .style("fill", function color(d1) {return d1.color});
+
+  var all_svgs = d3.select("#graph1").selectAll('svg');
+  var all_circles = all_svgs.selectAll("circle");
+  all_circles.style('stroke', 'none')
+    .style('stroke-width' ,'1')
+    .style("fill", function color(d1) {return d1.color})
+    .attr("opacity", 0.8);
+
+  var all_svgs = d3.select("#graph2").selectAll('svg');
+  var all_circles = all_svgs.selectAll("circle")
+  all_circles.style('stroke', 'none')
+    .style('stroke-width' ,'1')
+    .style("fill", function color(d1) {return d1.color})
+    .attr("opacity", 0.8);
+};
 
 CodeFlower.prototype.mouseout = function(d) {
   //this.node.style('stroke', 'black').style('stroke-width', '0.5');
   this.text.style('display', 'none')
-  this.node.style('stroke', 'black')
-      .style('stroke-width', '1');
+  general_mouseout(d);
 };
 
 CodeFlower.prototype.tick = function() {

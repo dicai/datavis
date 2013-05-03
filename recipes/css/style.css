@@ -1,37 +1,41 @@
 body
 {
-    min-width: 1250px;
-    height: 100%;
+  min-width: 1250px;
+  height: 100%;
 }
 body, a, p
 {
-  font-style: Georgia, sans-serif;
+  font-family: Helvetica, sans-serif;
   font-size: 15px;
   line-height: 1.2;
   text-align: center;
 }
 
+#directions
+{
+}
+
 header
 {
-    display:block;
-    font-family: Garamond;
+  display:block;
+  font-family: Garamond;
 }
 h2
 {
-    font-size: 18px;
-    font-family: Garamond;
+  font-size: 18px;
+  font-family: Garamond;
 }
 
 footer
 {
-    display:block;
-    //margin-top: 10px;
-    margin: auto;
-    font-size: 12px;
-    position:fixed;
-    bottom:0;
-    width:100%;
-    height:60px;
+  display:block;
+  //margin-top: 10px;
+  margin: auto;
+  font-size: 12px;
+  position:fixed;
+  bottom:0;
+  width:100%;
+  height:60px;
 }
 
 textarea
@@ -41,23 +45,24 @@ textarea
 
 div
 {
-    text-align: left;
+  text-align: left;
 }
 div#explanation
 {
-    width: 300px;
-    font-style: italic;
-    margin-bottom: 10px;
+  width: 200px;
+  font-size: 13px;
+  font-style: italic;
+  margin-bottom: 10px;
 }
 
 div#specificity
 {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 div#cuisine_checks
 {
-    margin-bottom: 20px; 
+  margin-bottom: 20px;
 }
 
 div#maxmin
@@ -106,9 +111,9 @@ line.link
 
 select
 {
-    font-size: 18px;
-    margin: 10px;
-    display: inline-block;
+  font-size: 18px;
+  margin: 10px;
+  display: inline-block;
 }
 
 input
@@ -122,68 +127,79 @@ input
 }
 
 #allthestuff{
-	position: relative;
+  position: relative;
 }
 /* style for the visualization box */
 #visualization
 {
-    display: inline-block;
-    width: 900px;
-    text-align: left;
-    margin: 10px;
-    font-style: italic;
+  display: inline-block;
+  position: absolute;
+  left: 220px;
+  width: 800px;
+  text-align: left;
+  margin: 8px;
+  font-style: italic;
 }
 
 #begin
 {
-    display: inline-block;
-    text-align: left;
-    margin: 10px;
-    font-style: italic;
+  display: inline-block;
+  text-align: left;
+  margin: 10px;
+  font-style: italic;
 }
 
 #toolbar
 {
-	position: absolute;
-	right: 30px;
-    vertical-align: top;
-    margin: 10px;
-    display: inline-block;
-    width: 23%;
-    //border-style: dotted;
-    //border-width: 1px;
+  position: absolute;
+  left: 5px;
+  vertical-align: top;
+  margin: 10px;
+  display: inline-block;
+  width: 200px; //25%;
+  //border-style: dotted;
+  //border-width: 1px;
 }
-.tooltip {
-    position: absolute;
-    top: 100px;
-    left: 100px;
-    border: 1px solid #e0e0e0;
-    background-color: #fefefe;
-    opacity: .9;
-    color: black;
-    padding: 10px;
-    width: 300px;
-    font-size: 7pt;
-    z-index: 10;
-}
-
-.tooltip .title a 
+.tooltip
 {
-    font-size: 10pt;
-    font-weight: bold;
-    color: blue;
+  font-family: Helvetica;
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  border: 1px solid #e0e0e0;
+  background-color: #fefefe;
+  opacity: .9;
+  color: black;
+  padding: 10px;
+  width: 300px;
+  font-size: 13px;
+  z-index: 10;
 }
 
-.ingredient 
+.tooltip ul
+{
+  //margin-top: 0px;
+  //margin-bottom: 0px;
+  //padding: 0px;
+}
+
+.tooltip .title a
+{
+  font-size: 14px;
+  font-weight: bold;
+  color: blue;
+}
+
+.ingredient
 {
   text-align:left;
 }
 
-.info 
+.info
 {
-    line-height: 110%;
-    font-size: 8pt;
-    font-weight: bold;
+  line-height: 110%;
+  font-size: 8pt;
+  font-weight: bold;
 }
 
 .swatch
@@ -214,17 +230,18 @@ li
 
 span
 {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .info
 {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .title
 {
-    font-family: Garamond;
+  font-family: Helvetica;
+  text-align: center;
 }
 
 a:link
@@ -245,4 +262,127 @@ a:link
 #slider_container
 {
   padding-top: 25px;
+}
+
+.axis path,.axis line
+{
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+/*.x.axis path */
+/*{*/
+/*display: none;*/
+/*}*/
+
+/*
+.line
+{
+fill: none;
+stroke: steelblue;
+stroke-width: 1.5px;
+}
+ */
+/*.y.axis*/
+/*{*/
+/*display: none;*/
+/*}*/
+
+#graph_stuff{
+  position: absolute;
+  right: 0px;
+}
+#graph1, #graph2{
+  position: relative;
+  //top: 20px;
+//  left: 50px;
+}
+.pick_axes{
+  display: inline-block;
+  text-align: right;
+}
+svg{
+  inline-block;
+}
+
+#graphs {
+  position: relative;
+  top: 50px;
+}
+#sidebar
+{
+  position: absolute;
+  font-weight: bold;
+  font-family: Helvetica;
+  font-size: 14px;
+  margin-bottom: 10px;
+  width: 300px;
+}
+
+#story {
+}
+#text0
+{
+  position: absolute;
+  z-index: 1000;
+  width: 150px;
+  top:150px;
+  left: 50px;
+}
+#start_tutorial {
+  font-size: 16px;
+  background-color: pink;
+  font-weight: bold;
+}
+
+#text1
+{
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  width: 200px;
+  top:100px;
+  left: 80px;
+  background-color: pink;
+}
+#text2
+{
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  width: 200px;
+  top:300px;
+  left: 150px;
+  background-color: pink;
+}
+#text3
+{
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  width: 200px;
+  top:550px;
+  left: 250px;
+  background-color: pink;
+}
+#text4
+{
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  width: 300px;
+  top:200px;
+  left: 300px;
+  background-color: pink;
+}
+#text5
+{
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  width: 300px;
+  top:10px;
+  right: 50px;
+  background-color: pink;
 }

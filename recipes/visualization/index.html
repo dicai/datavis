@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Food Around the World</title>
+    <link rel="stylesheet" href="../css/style.css"/>
+    <link rel="stylesheet" href="../css/jquery-ui.css"/>
+    <!-- Link to d3 library or change path to local copy -->
+    <script src="../js/d3.v3.min.js"></script>
+    <script src="../js/jquery-1.9.1.min.js"></script>
+    <script src="../js/jquery-ui.js"></script>
+  </head>
+  <body>
+    <div id = "story">
+      <div id="text0">
+        <button type="button" id="start_tutorial" onclick="next(0)">
+          Begin tutorial! </button>
+      </div>
+      <div id="text1">
+        Start by choosing a cuisine from the drop down.  Then choose a recipe, that you're interested in.  You can also choose Randomly which allows you to discover new recipes.
+        <button type="button" onclick="next(1)">Next</button>
+      </div>
+      <div id="text2">
+        Here you can filter the results.  You can remove cuisines you don't want using these check boxes.  As you click them, the results are dynamically updated to reflect these changes.
+        <br/>
+        Clusters represent cuisines. Larger nodes have higher similarity to the recipe picked from Step 1.
+        <button type="button" onclick="next(2)">Next</button>
+      </div>
+      <div id = "text3">
+        You can also alter how similar the recipes you are seeing are to the original using this slider.  Try increasing the minimum similarity.  You will see the number of results drastically decreases as you do so.
+        <button type="button" onclick="next(3)">Next</button>
+      </div>
+      <div id="text4">
+        The graph shows each recipe as a bubble.  It's size represents it's similarity to the original recipe.  It's color represents it's cuisine.  
+        You can mouse over a bubble to get more detailed information about it.  Look in the top right to see the name and similarity to the original recipe.  You can also click on bubbles to get a more detailed view.  The title in this view is a link to the website with the original recipe. 
+        <button type="button" onclick="next(4)">Next </button>
+      </div>
+      <div id="text5">
+        Here you can see another view of the data.  You can chosoe to compare the recipes on different metrics including rating, fat content, time to cook, and many more.
+        When you hover over the graph, the orignal recipe lights up on the main graph.
+        There are two graphs so that you can compare graphs easily side by side.
+        <button type="button" onclick="next(5)">Next </button>
+      </div>
+    </div>
+    <header>
+    <h1>WHAT SHOULD I MAKE TONIGHT?</h1>
+    <p>Bored of eating the same spaghetti recipe over and over? Lettuce help you!</p>
+    </header>
+
+    <div id="options">
+      <table>
+        <tr>
+    <td>
+      <button type="button" onclick="randomize()">I'm feeling lucky!</button>
+    </td>
+    <td>
+      <select id="cuisine" onchange="load_recipes()">
+        <option selected value="base">Select Cuisine</option>
+      </select>
+    </td>
+    <td>
+      <select id="recipe" onchange="load_viz(false)">
+        <option selected value="base">Select Cuisine first</option>
+      </select>
+    </td>
+  </tr>
+</table>
+    </div>
+    <div id="allthestuff">
+      <div id="visualization"> </div>
+      <div id="toolbar">
+        <div id = "explanation">
+            <p>
+           <!-- 
+            We scraped data for 12 cuisines. Here given a cuisine and a recipe from the cuisie calculate the cosine similarity between them. The clusters represent different cuisines.
+Larger nodes represent more similar cuisines.
+          Click on a node for more information!
+          -->
+            </p>
+        </div>
+        <div>
+          <div id="cuisine_checks">
+            <h2>Filter by Cuisine</h2>
+            <div id = "check_all">
+              <input type="checkbox" id="checkall" checked onchange="check_all(this)">Check all
+              <input type="checkbox" id="uncheckall" onchange="uncheck_all(this)">Uncheck all
+            </div>
+            <div id = "check_one">
+            </div>
+          </div>
+          <h2>Filter by Similarity</h2>
+          <div id="slider_stuff">
+            <div id="maxmin">
+            </div>
+            <div id ="slider_container">
+              <div id="slider">
+              </div>
+            </div>
+          </div>
+          <br />
+        </div>
+      </div>
+    </div>
+    <div id="graph_stuff">
+      <div id="sidebar">
+      </div>
+      <div id="graphs">
+      <div class="pick_axes">
+        <table width="100px" text-align="left">
+          <tr>
+            <td>
+              X-axis:
+            </td>
+            <td>
+              Y-axis:
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div id="choose_x_axis">
+                <select id="xgraph1" onchange=redraw_graphs("graph1")>
+                  <option value="rating">rating</option>
+                  <option value="kcal">kCal</option>
+                  <option value="chol">cholesterol</option>
+                  <option value="fat" selected>fat</option>
+                  <option value="protein">protein</option>
+                  <option value="fiber">fiber</option>
+                  <option value="sodium">sodium</option>
+                  <option value="time">time</option>
+                  <option value="ning"># of ingredients</option>
+                </select>
+              </div>
+            </td>
+            <td>
+              <div id="choose_y_axis">
+                <select id="ygraph1" onchange=redraw_graphs("graph1")>
+                  <option value="rating">rating</option>
+                  <option value="kcal" selected>kCal</option>
+                  <option value="chol">cholesterol</option>
+                  <option value="fat">fat</option>
+                  <option value="protein">protein</option>
+                  <option value="fiber">fiber</option>
+                  <option value="sodium">sodium</option>
+                  <option value="time">time</option>
+                  <option value="ning"># of ingredients</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <div id="graph1"> </div>
+      </div>
+      <div class="pick_axes">
+        <table width="100px" text-align="left">
+          <tr>
+            <td>
+              X-axis:
+            </td>
+            <td>
+              Y-axis:
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div id="choose_x_axis">
+                <select id="xgraph2" onchange=redraw_graphs("graph2")>
+                  <option value="rating">rating</option>
+                  <option value="kcal" selected>kCal</option>
+                  <option value="chol">cholesterol</option>
+                  <option value="fat">fat</option>
+                  <option value="protein">protein</option>
+                  <option value="fiber">fiber</option>
+                  <option value="sodium">sodium</option>
+                  <option value="time">time</option>
+                  <option value="ning"># of ingredients</option>
+                </select>
+              </div>
+            </td>
+            <td>
+              <div id="choose_y_axis">
+                <select id="ygraph2" onchange=redraw_graphs("graph2")>
+                  <option value="rating" selected>rating</option>
+                  <option value="kcal">kCal</option>
+                  <option value="chol">cholesterol</option>
+                  <option value="fat">fat</option>
+                  <option value="protein">protein</option>
+                  <option value="fiber">fiber</option>
+                  <option value="sodium">sodium</option>
+                  <option value="time">time</option>
+                  <option value="ning"># of ingredients</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <div id="graph2"> </div>
+      </div>
+    </div>
+    </div>
+
+
+        <footer>
+        <!--This was made for CS171 Project 2 by Diana Cai and Gabrielle Ehrlich.-->
+        </footer>
+        <script type="text/javascript" src="../js/custom-tooltip.js"></script>
+        <script type="text/javascript" src="../js/CodeFlower.js"></script>
+        <script src="../js/analyze.js"></script>
+        <script src="../js/scatterplot.js"></script>
+        <script src="../js/story.js"></script>
+
+      </body>
+    </html>
