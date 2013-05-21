@@ -4,7 +4,7 @@
 function CustomTooltip( tooltipId, width ) {
 
     var tooltipId = tooltipId;
-    $("body").append("<div class='tooltip' id='" + tooltipId + "'></div>");
+    $("body").append("<div class='tooltip2' data-toggle='tooltip' id='" + tooltipId + "'></div>");
 
     var tooltip = $('#'+tooltipId);
 

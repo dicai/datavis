@@ -4,41 +4,49 @@
     <title>Food Around the World</title>
     <link rel="stylesheet" href="../css/style.css"/>
     <link rel="stylesheet" href="../css/jquery-ui.css"/>
+    <link rel="stylesheet" href="../css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../css/bootstrap-responsive.min.css"/>
     <!-- Link to d3 library or change path to local copy -->
     <script src="../js/d3.v3.min.js"></script>
     <script src="../js/jquery-1.9.1.min.js"></script>
     <script src="../js/jquery-ui.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
   </head>
   <body>
     <div id = "story">
       <div id="text0">
-        <button type="button" id="start_tutorial" onclick="next(0)">
+        <button type="button" id="start_tutorial" class="btn btn-info" onclick="next(0)">
           Begin tutorial! </button>
       </div>
-      <div id="text1">
+      <div id="text1" class="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
         Start by choosing a cuisine from the drop down.  Then choose a recipe, that you're interested in.  You can also choose Randomly which allows you to discover new recipes.
-        <button type="button" onclick="next(1)">Next</button>
+        <button type="button" class="btn" onclick="next(1)">Next</button>
       </div>
-      <div id="text2">
+      <div id="text2" class="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
         Here you can filter the results.  You can remove cuisines you don't want using these check boxes.  As you click them, the results are dynamically updated to reflect these changes.
         <br/>
         Clusters represent cuisines. Larger nodes have higher similarity to the recipe picked from Step 1.
-        <button type="button" onclick="next(2)">Next</button>
+        <button type="button" class="btn" onclick="next(2)">Next</button>
       </div>
-      <div id = "text3">
+      <div id = "text3" class="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
         You can also alter how similar the recipes you are seeing are to the original using this slider.  Try increasing the minimum similarity.  You will see the number of results drastically decreases as you do so.
-        <button type="button" onclick="next(3)">Next</button>
+        <button type="button" class="btn" onclick="next(3)">Next</button>
       </div>
-      <div id="text4">
+      <div id="text4" class="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
         The graph shows each recipe as a bubble.  It's size represents it's similarity to the original recipe.  It's color represents it's cuisine.  
         You can mouse over a bubble to get more detailed information about it.  Look in the top right to see the name and similarity to the original recipe.  You can also click on bubbles to get a more detailed view.  The title in this view is a link to the website with the original recipe. 
-        <button type="button" onclick="next(4)">Next </button>
+        <button type="button" class="btn" onclick="next(4)">Next </button>
       </div>
-      <div id="text5">
+      <div id="text5" class="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
         Here you can see another view of the data.  You can chosoe to compare the recipes on different metrics including rating, fat content, time to cook, and many more.
         When you hover over the graph, the orignal recipe lights up on the main graph.
         There are two graphs so that you can compare graphs easily side by side.
-        <button type="button" onclick="next(5)">Next </button>
+        <button type="button" class="btn" onclick="next(5)">Next </button>
       </div>
     </div>
     <header>
@@ -47,10 +55,10 @@
     </header>
 
     <div id="options">
-      <table>
+      <table class="table">
         <tr>
     <td>
-      <button type="button" onclick="randomize()">I'm feeling lucky!</button>
+      <button type="button" class="btn" onclick="randomize()">I'm feeling lucky!</button>
     </td>
     <td>
       <select id="cuisine" onchange="load_recipes()">
@@ -79,15 +87,15 @@ Larger nodes represent more similar cuisines.
         </div>
         <div>
           <div id="cuisine_checks">
-            <h2>Filter by Cuisine</h2>
+            <h4>Filter by Cuisine</h4>
             <div id = "check_all">
-              <input type="checkbox" id="checkall" checked onchange="check_all(this)">Check all
-              <input type="checkbox" id="uncheckall" onchange="uncheck_all(this)">Uncheck all
+              <input type="checkbox" class="checkbox" id="checkall" checked onchange="check_all(this)">Check all
+              <input type="checkbox" class="checkbox" id="uncheckall" onchange="uncheck_all(this)">Uncheck all
             </div>
-            <div id = "check_one">
+            <div id = "check_one" class="btn-group-vertical" data-toggle="buttons-checkbox">
             </div>
           </div>
-          <h2>Filter by Similarity</h2>
+          <h4>Filter by Similarity</h4>
           <div id="slider_stuff">
             <div id="maxmin">
             </div>

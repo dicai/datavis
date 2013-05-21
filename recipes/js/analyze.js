@@ -106,38 +106,45 @@ function check_change(e) {
   uncheckall.checked = false;
   var checkall = document.getElementById("checkall");
   checkall.checked = false;
+  console.log(e);
 
+  if($('#'+e.id).hasClass("selected")) {
+      $('#'+e.id).removeClass("selected");
+  }
+  else {
+      $('#'+e.id).addClass("selected");
+  }
+  console.log(e);
   if(currentCodeFlower) {
       load_viz(true);
   }
 }
 
 function check_all(e) {
-  console.log(e, e.checked);
   if(e.checked) {
     var uncheckall = document.getElementById("uncheckall");
     uncheckall.checked = false;
     var checkboxes = $(".check");
     for(var i =0; i < checkboxes.length; i++)
     {
-      checkboxes[i].checked=true;
+      $('#'+checkboxes[i].id).addClass("selected");
+      $('#'+checkboxes[i].id).addClass("active");
     }
   }
   if(currentCodeFlower) {
       load_viz(true);
-      console.log("I cry to the heavens, they do not answer");
   }
 }
 
 function uncheck_all(e) {
-  console.log(e, e.checked);
   if(e.checked) {
     var checkboxes = $(".check");
     var checkall = document.getElementById("checkall");
     checkall.checked = false;
     for(var i =0; i < checkboxes.length; i++)
     {
-      checkboxes[i].checked=false;
+      $('#'+checkboxes[i].id).removeClass("selected");
+      $('#'+checkboxes[i].id).removeClass("active");
     }
   }
   if(currentCodeFlower) {
@@ -149,7 +156,9 @@ function populate_check_boxes() {
   var checkboxes = document.getElementById("check_one");
   for(var cuisine in cuisine_data) {
     var elt = document.createElement("div");
-    elt.innerHTML = '<input type = \"checkbox\" class=\"check\" name=\"' + cuisine + '\" checked onchange=\"check_change(this)\" id=\"' + cuisine + '\">' + cuisine +" ";
+    //TODO:gabrielle
+    elt.innerHTML = '<button type="button" class="btn btn-small btn-block active selected check" onclick=\"check_change(this)\" id=\"' + cuisine + '\">' + cuisine +'</button>' 
+    //elt.innerHTML = '<input type = \"checkbox\" class=\"check\" name=\"' + cuisine + '\" checked onchange=\"check_change(this)\" id=\"' + cuisine + '\">' + cuisine +" ";
     var swatch = document.createElement("span");
     swatch.className = "swatch";
     swatch.style.backgroundColor = color(cuisine);
@@ -344,7 +353,7 @@ function build_new_json(elt, elt_cuisine){
     "cuisine": elt_cuisine,
     "rating": elt["rating"],
     "url" : "http://allrecipes.com/recipe/" + elt["title"] + "/detail.aspx",
-    "ing_lst": elt["ing_lst"],
+    "inglist": elt["ing_lst"],
     "ning": elt["ning"],
     "color" : color("unique"),
     "kcal": elt["kcal"],
@@ -361,8 +370,11 @@ function build_new_json(elt, elt_cuisine){
   for (var cuisine in cuisine_data)
   {
     flattened_data[cuisine] = [];
-    var checkbox = document.getElementById(cuisine);
-    if(checkbox.checked) {
+    //var checkbox = document.getElementById(cuisine);
+    //if(checkbox.checked) {
+    var button = document.getElementById(cuisine);
+    console.log("button: ",cuisine, button, button.className);
+    if($('#'+cuisine).hasClass('selected')) {
       var data = cuisine_data[cuisine];
       var recipes = data["data"];
       if(cuisine == elt_cuisine)

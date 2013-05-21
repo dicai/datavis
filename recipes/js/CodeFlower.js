@@ -122,10 +122,10 @@ CodeFlower.prototype.flatten = function(root) {
 var tooltip = CustomTooltip("recipe_tooltip", 240);
 CodeFlower.prototype.click = function(d) {
   console.log("clicked!");
-  var ingredients = '<ul>';
+  var ingredients = '<ul class=\"list-style\">';
   for(var i = 0; i < d.inglist.length; i++)
   {
-    ingredients += '<li class=\"ingredient\">' + d.inglist[i] + '</li><br/>'
+    ingredients += '<li class=\"ingredient\">' + d.inglist[i] + '</li>'
   }
   ingredients += '</ul>'
   var content =
