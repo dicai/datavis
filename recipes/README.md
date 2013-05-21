@@ -1,3 +1,5 @@
+recipe visualization made with Gabrielle Ehrlich (@gehrlich). Made using D3.js.
+
 How to run the code --
 
 First we need to start the simple server:
